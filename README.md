@@ -2,6 +2,12 @@
 
 **Simple X Image Viewer**
 
+# THIS IS A FORK WITH PERSONAL PRFERENCES
+
+The only difference so far is that I've changed the behavior of two-finger scroll on touchpad to scroll the image instead of zooming it in and out. Otherwise this is the same as it ever was.
+
+
+
 The sole purpose of sxiv is to be the perfect image viewer for me. It is free
 software so that you can use it and modify it for your needs. Please file a bug
 report if something does not work as documented or expected. Contributions are
