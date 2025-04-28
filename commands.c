@@ -155,11 +155,15 @@ static bool ensure_trash_dir(void)
 		return true;
 
 	char template[PATH_MAX];
-	const char *tmpdir = getenv("TMPDIR");
-	if (tmpdir == NULL)
-		tmpdir = "/tmp";
+	char cwd[PATH_MAX];
+	
+	/* Get current working directory */
+	if (getcwd(cwd, sizeof(cwd)) == NULL) {
+		error(0, errno, "Failed to get current working directory");
+		return false;
+	}
 
-	snprintf(template, sizeof(template), "%s/sxiv-trash-XXXXXX", tmpdir);
+	snprintf(template, sizeof(template), "%s/.sxiv-trash-XXXXXX", cwd);
 	char *dir = mkdtemp(template);
 	if (dir == NULL) {
 		error(0, errno, "Failed to create trash directory");
