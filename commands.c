@@ -24,6 +24,8 @@
 #include <string.h>
 #include <unistd.h>
 #include <sys/wait.h>
+#include <limits.h>
+#include <errno.h>
 
 void remove_file(int, bool);
 void load_image(int);
@@ -37,6 +39,7 @@ void animate(void);
 void slideshow(void);
 void set_timeout(timeout_f, int, bool);
 void reset_timeout(timeout_f);
+void cleanup_trash_dir(void);
 
 extern appmode_t mode;
 extern img_t img;
@@ -140,6 +143,81 @@ bool cg_remove_image(arg_t _)
 	else
 		tns.dirty = true;
 	return true;
+}
+
+/* trash directory path */
+static char *trash_dir = NULL;
+
+/* create trash directory if it doesn't exist */
+static bool ensure_trash_dir(void)
+{
+	if (trash_dir != NULL)
+		return true;
+
+	char template[PATH_MAX];
+	const char *tmpdir = getenv("TMPDIR");
+	if (tmpdir == NULL)
+		tmpdir = "/tmp";
+
+	snprintf(template, sizeof(template), "%s/sxiv-trash-XXXXXX", tmpdir);
+	char *dir = mkdtemp(template);
+	if (dir == NULL) {
+		error(0, errno, "Failed to create trash directory");
+		return false;
+	}
+
+	trash_dir = estrdup(dir);
+	fprintf(stderr, "Created trash directory: %s\n", trash_dir);
+	return true;
+}
+
+/* clean up trash directory on exit */
+void cleanup_trash_dir(void)
+{
+	if (trash_dir == NULL)
+		return;
+
+	char cmd[PATH_MAX + 10];
+	snprintf(cmd, sizeof(cmd), "rm -rf %s", trash_dir);
+	if (system(cmd) != 0)
+		error(0, errno, "Failed to remove trash directory: %s", trash_dir);
+	else
+		fprintf(stderr, "Removed trash directory: %s\n", trash_dir);
+
+	free(trash_dir);
+	trash_dir = NULL;
+}
+
+bool cg_delete_image(arg_t _)
+{
+	if (mode == MODE_IMAGE) {
+		const char *filename = files[fileidx].path;
+		
+		if (!ensure_trash_dir())
+			return false;
+		
+		/* Get the base filename without path */
+		const char *basename = strrchr(filename, '/');
+		if (basename == NULL)
+			basename = filename;
+		else
+			basename++; /* Skip the '/' */
+		
+		/* Create destination path in trash directory */
+		char dest_path[PATH_MAX];
+		snprintf(dest_path, sizeof(dest_path), "%s/%s", trash_dir, basename);
+		
+		/* Move the file to trash */
+		if (rename(filename, dest_path) == 0) {
+			fprintf(stderr, "Moved to trash: %s\n", basename);
+			remove_file(fileidx, true);
+			load_image(fileidx);
+			return true;
+		} else {
+			error(0, errno, "Failed to move file to trash: %s", filename);
+		}
+	}
+	return false;
 }
 
 bool cg_first(arg_t _)

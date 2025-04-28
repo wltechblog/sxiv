@@ -47,6 +47,9 @@ void animate(void);
 void slideshow(void);
 void clear_resize(void);
 
+/* trash directory cleanup function from commands.c */
+void cleanup_trash_dir(void);
+
 appmode_t mode;
 arl_t arl;
 img_t img;
@@ -99,6 +102,7 @@ void cleanup(void)
 	arl_cleanup(&arl);
 	tns_free(&tns);
 	win_close(&win);
+	cleanup_trash_dir();
 }
 
 void check_add_file(char *filename, bool given)

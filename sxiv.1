@@ -97,7 +97,7 @@ may be a floating point number.
 .TP
 .BI "\-s " MODE
 Set scale mode according to MODE character. Supported modes are: [d]own, 
-[f]it, [w]idth, [h]eight.
+[f]it (default), [w]idth, [h]eight.
 .TP
 .B \-t
 Start in thumbnail mode.
@@ -146,6 +146,9 @@ Reload image.
 .TP
 .B D
 Remove current image from file list and go to next image.
+.TP
+.B Delete
+Move current image to a temporary trash directory and go to next image. The trash directory and its contents are automatically removed when sxiv exits.
 .TP
 .BR Ctrl-h ", " Ctrl-Left
 Scroll left one screen width.
