@@ -319,6 +319,9 @@ void load_image(int new)
 	open_info();
 	arl_setup(&arl, files[fileidx].path);
 
+	if (options->print)
+		printf("%s\n", files[fileidx].name);
+
 	if (img.multi.cnt > 0 && img.multi.animate)
 		set_timeout(animate, img.multi.frames[img.multi.sel].delay, true);
 	else
