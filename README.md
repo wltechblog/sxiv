@@ -4,7 +4,12 @@
 
 # THIS IS A FORK WITH PERSONAL PRFERENCES
 
-The only difference so far is that I've changed the behavior of two-finger scroll on touchpad to scroll the image instead of zooming it in and out. Otherwise this is the same as it ever was.
+The primary differences with this fork:
+
+. Two finger scrolling will now scroll instead of zooming in and out
+. The default scale mode is "fit"
+. Your delete key will delete the currently selected image
+. When using the-P flag, we prit out the filename of the image displayed
 
 
 
