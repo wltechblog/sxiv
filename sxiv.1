@@ -44,9 +44,6 @@ Play animations of multi-frame images.
 .B \-b
 Do not show info bar on bottom of window.
 .TP
-.B \-c
-Remove all orphaned cache files from the thumbnail cache directory and exit.
-.TP
 .BI "\-e " WID
 Embed sxiv's window into window whose ID is
 .IR WID .
@@ -80,7 +77,7 @@ with
 sxiv can be used as a visual filter/pipe.
 .TP
 .B \-p
-Enable private mode, in which sxiv does not write any cache or temporary files.
+Enable private mode, in which sxiv does not write any temporary files.
 .TP
 .B \-P
 Print the name of the current file to standard output when a new image is loaded.
@@ -422,18 +419,6 @@ keysym as listed in /usr/include/X11/keysymdef.h without the "XK_" prefix.
 
 There is also an example script installed together with sxiv as
 .IR PREFIX/share/sxiv/exec/key-handler .
-.SH THUMBNAIL CACHING
-sxiv stores all thumbnails under
-.IR $XDG_CACHE_HOME/sxiv/ .
-.P
-Use the command line option
-.I \-c
-to remove all orphaned cache files. Additionally, run the following command
-afterwards inside the cache directory to remove empty subdirectories:
-.P
-.RS
-find . \-depth \-type d \-empty ! \-name '.' \-exec rmdir {} \\;
-.RE
 .SH AUTHOR
 .EX
 Bert Muennich   <xyb3rt at gmail.com>

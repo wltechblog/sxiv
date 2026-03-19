@@ -841,12 +841,6 @@ int main(int argc, char **argv)
 
 	parse_options(argc, argv);
 
-	if (options->clean_cache) {
-		tns_init(&tns, NULL, NULL, NULL, NULL);
-		tns_clean_cache(&tns);
-		exit(EXIT_SUCCESS);
-	}
-
 	if (options->filecnt == 0 && !options->from_stdin) {
 		print_usage();
 		exit(EXIT_FAILURE);
