@@ -18,6 +18,7 @@
 
 #include "sxiv.h"
 #define _WINDOW_CONFIG
+#include "config-settings.h"
 #include "config.h"
 #include "icon/data.h"
 #include "utf8.h"

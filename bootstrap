@@ -1,0 +1,11 @@
+#!/bin/sh
+set -e
+
+# Generate the autotools build system
+
+echo "Running autoreconf..."
+autoreconf --install --verbose --force
+
+echo ""
+echo "Build system generated successfully."
+echo "Now run: ./configure && make"

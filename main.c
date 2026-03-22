@@ -18,6 +18,7 @@
 
 #include "sxiv.h"
 #define _MAPPINGS_CONFIG
+#include "config-settings.h"
 #include "config.h"
 
 #include <stdlib.h>

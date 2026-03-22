@@ -1,255 +1,162 @@
-![sxiv](http://xyb3rt.github.io/sxiv/img/logo.png "sxiv")
+# sxiv
 
-**Simple X Image Viewer**
+Simple X Image Viewer - A continuation of development
 
-# THIS IS A FORK WITH PERSONAL PRFERENCES
+This project is a continuation of the sxiv (Simple X Image Viewer) project, originally created by Bert Muennich. sxiv is a lightweight, efficient image viewer for the X Window System, designed for simplicity and speed.
 
-The primary differences with this fork:
+## Overview
 
-. Two finger scrolling will now scroll instead of zooming in and out
-. The default scale mode is "fit"
-. Your delete key will delete the currently selected image
-. When using the-P flag, we prit out the filename of the image displayed
+The sole purpose of sxiv is to be a perfect image viewer. It is light, fast, and includes only the common useful features.
 
+It is free software so that you can use it and modify it for your needs. Bug reports and contributions are welcome.
 
+## Features
 
-The sole purpose of sxiv is to be the perfect image viewer for me. It is free
-software so that you can use it and modify it for your needs. Please file a bug
-report if something does not work as documented or expected. Contributions are
-welcome but there is no guarantee that they will be incorporated.
+- Basic image operations: zooming, panning, rotating, flipping
+- Thumbnail mode: grid of selectable previews of all images
+- Multi-frame image support (GIF animations)
+- Customizable key and mouse button mappings (in `config-settings.h`)
+- Display image information in status bar
+- EXIF metadata support (optional, via libexif)
+- GIF animation support (optional, via giflib)
+- Minimal resource usage
+- Fast loading and navigation
 
+## Dependencies
 
-Features
---------
+Required:
+- Imlib2
+- X11
+- Xft
+- fontconfig
+- freetype2
 
-* Basic image operations, e.g. zooming, panning, rotating
-* Customizable key and mouse button mappings (in *config.h*)
-* Thumbnail mode: grid of selectable previews of all images
-* Ability to cache thumbnails for fast re-loading
-* Basic support for multi-frame images
-* Load all frames from GIF files and play GIF animations
-* Display image information in status bar
+Optional:
+- giflib - for GIF support
+- libexif - for EXIF metadata handling
 
+## Building
 
-Screenshots
------------
+This project supports two build systems:
 
-**Image mode:**
+### GNU Autotools (Recommended)
 
-![Image](http://xyb3rt.github.io/sxiv/img/image.png "Image mode")
+The autotools build system automatically detects library paths and dependencies:
 
-**Thumbnail mode:**
+```bash
+# From git repository
+./bootstrap
+./configure
+make
 
-![Thumb](http://xyb3rt.github.io/sxiv/img/thumb.png "Thumb mode")
+# From release tarball
+./configure
+make
 
+# Install (requires root)
+sudo make install
+```
 
-Dependencies
-------------
+**Note:** This project requires GNU Make. On BSD systems where the default `make` command is not GNU Make, the configure script will detect this and instruct you to use `gmake` instead.
 
-sxiv requires the following software to be installed:
+Configuration options:
 
-  * Imlib2
-  * X11
-  * Xft
-  * freetype2
-  * fontconfig
-  * giflib (optional, disabled with `HAVE_GIFLIB=0`)
-  * libexif (optional, disabled with `HAVE_LIBEXIF=0`)
+```bash
+./configure --prefix=/usr               # Install to /usr instead of /usr/local
+./configure --without-giflib           # Disable GIF support
+./configure --without-libexif           # Disable EXIF support
+./configure --help                     # See all options
+```
 
-Please make sure to install the corresponding development packages in case that
-you want to build sxiv on a distribution with separate runtime and development
-packages (e.g. *-dev on Debian).
+### Manual Makefile (Legacy)
 
+The original Makefile is included as `Makefile.bak` for reference. Edit it to set build options:
 
-Building
---------
+```bash
+make
+sudo make install
+```
 
-sxiv is built using the commands:
+## Usage
 
-    $ make
-    # make install
+Basic usage:
+```bash
+# View a single image
+sxiv image.jpg
 
-Please note, that the latter one requires root privileges.
-By default, sxiv is installed using the prefix "/usr/local", so the full path
-of the executable will be "/usr/local/bin/sxiv".
+# View multiple images
+sxiv image1.jpg image2.png image3.jpg
 
-You can install sxiv into a directory of your choice by changing the second
-command to:
+# View all images in a directory
+sxiv directory/
 
-    # make PREFIX="/your/dir" install
+# Start in fullscreen mode
+sxiv -f image.jpg
 
-The build-time specific settings of sxiv can be found in the file *config.h*.
-Please check and change them, so that they fit your needs.
-If the file *config.h* does not already exist, then you have to create it with
-the following command:
+# Start in thumbnail mode
+sxiv -t directory/
+```
 
-    $ make config.h
-
-
-Usage
------
-
-Please see the [man page](http://xyb3rt.github.io/sxiv/sxiv.1.html) for
-information on how to use sxiv.
-
-
-Download & Changelog
---------------------
-
-You can [browse](https://github.com/xyb3rt/sxiv) the source code repository
-on GitHub or get a copy using git with the following command:
-
-    git clone https://github.com/xyb3rt/sxiv.git
-
-**Stable releases**
-
-**[v26](https://github.com/xyb3rt/sxiv/archive/v26.tar.gz)**
-*(January 16, 2020)*
-
-  * Maintenance release
-
-**[v25](https://github.com/xyb3rt/sxiv/archive/v25.tar.gz)**
-*(January 26, 2019)*
-
-  * Support font fallback for missing glyphs
-  * Fix busy loop when built without inotify
-  * Use background/foreground colors from X resource database
-
-**[v24](https://github.com/xyb3rt/sxiv/archive/v24.tar.gz)**
-*(October 27, 2017)*
-
-  * Automatically reload the current image whenever it changes
-  * Support embedding into other X windows with -e (e.g. tabbed)
-  * New option -p prevents sxiv from creating cache and temporary files
-  * Simpler mouse mappings, the most basic features are accessible with the
-    mouse only (navigate, zoom, pan)
-
-**[v1.3.2](https://github.com/xyb3rt/sxiv/archive/v1.3.2.tar.gz)**
-*(December 20, 2015)*
-
-  * external key handler gets file paths on stdin, not as arguments
-  * Cache out-of-view thumbnails in the background
-  * Apply gamma correction to thumbnails
-
-**[v1.3.1](https://github.com/xyb3rt/sxiv/archive/v1.3.1.tar.gz)**
-*(November 16, 2014)*
-
-  * Fixed build error, caused by delayed config.h creation
-  * Fixed segfault when run with -c
-
-**[v1.3](https://github.com/xyb3rt/sxiv/archive/v1.3.tar.gz)**
-*(October 24, 2014)*
-
-  * Extract thumbnails from EXIF tags (requires libexif)
-  * Zoomable thumbnails, supported sizes defined in config.h
-  * Fixed build error with giflib version >= 5.1.0
-
-**[v1.2](https://github.com/xyb3rt/sxiv/archive/v1.2.tar.gz)**
-*(April 24, 2014)*
-
-  * Added external key handler, called on keys prefixed with `Ctrl-x`
-  * New keybinding `{`/`}` to change gamma (by András Mohari)
-  * Support for slideshows, enabled with `-S` option & toggled with `s`
-  * Added application icon (created by 0ion9)
-  * Checkerboard background for alpha layer
-  * Option `-o` only prints files marked with `m` key
-  * Fixed rotation/flipping of multi-frame images (gifs)
-
-**[v1.1.1](https://github.com/xyb3rt/sxiv/archive/v1.1.1.tar.gz)**
-*(June 2, 2013)*
-
-  * Various bug fixes
-
-**[v1.1](https://github.com/xyb3rt/sxiv/archive/v1.1.tar.gz)**
-*(March 30, 2013)*
-
-  * Added status bar on bottom of window with customizable content
-  * New keyboard shortcuts `\`/`|`: flip image vertically/horizontally
-  * New keyboard shortcut `Ctrl-6`: go to last/alternate image
-  * Added own EXIF orientation handling, removed dependency on libexif
-  * Fixed various bugs
-
-**[v1.0](https://github.com/xyb3rt/sxiv/archive/v1.0.tar.gz)**
-*(October 31, 2011)*
-
-  * Support for multi-frame images & GIF animations
-  * POSIX compliant (IEEE Std 1003.1-2001)
-
-**[v0.9](https://github.com/xyb3rt/sxiv/archive/v0.9.tar.gz)**
-*(August 17, 2011)*
-
-  * Made key and mouse mappings fully configurable in config.h
-  * Complete code refactoring
-
-**[v0.8.2](https://github.com/xyb3rt/sxiv/archive/v0.8.2.tar.gz)**
-*(June 29, 2011)*
-
-  * POSIX-compliant Makefile; compiles under NetBSD
-
-**[v0.8.1](https://github.com/xyb3rt/sxiv/archive/v0.8.1.tar.gz)**
-*(May 8, 2011)*
-
-  * Fixed fullscreen under window managers, which are not fully EWMH-compliant
-
-**[v0.8](https://github.com/xyb3rt/sxiv/archive/v0.8.tar.gz)**
-*(April 18, 2011)*
-
-  * Support for thumbnail caching
-  * Ability to run external commands (e.g. jpegtran, convert) on current image
-
-**[v0.7](https://github.com/xyb3rt/sxiv/archive/v0.7.tar.gz)**
-*(February 26, 2011)*
-
-  * Sort directory entries when using `-r` command line option
-  * Hide cursor in image mode
-  * Full functional thumbnail mode, use Return key to switch between image and
-    thumbnail mode
-
-**[v0.6](https://github.com/xyb3rt/sxiv/archive/v0.6.tar.gz)**
-*(February 16, 2011)*
-
-  * Bug fix: Correctly display filenames with umlauts in window title
-  * Basic support of thumbnails
-
-**[v0.5](https://github.com/xyb3rt/sxiv/archive/v0.5.tar.gz)**
-*(February 6, 2011)*
-
-  * New command line option: `-r`: open all images in given directories
-  * New key shortcuts: `w`: resize image to fit into window; `W`: resize window
-    to fit to image
-
-**[v0.4](https://github.com/xyb3rt/sxiv/archive/v0.4.tar.gz)**
-*(February 1, 2011)*
-
-  * New command line option: `-F`, `-g`: use fixed window dimensions and apply
-    a given window geometry
-  * New key shortcut: `r`: reload current image
-
-**[v0.3.1](https://github.com/xyb3rt/sxiv/archive/v0.3.1.tar.gz)**
-*(January 30, 2011)*
-
-  * Bug fix: Do not set setuid bit on executable when using `make install`
-  * Pan image with mouse while pressing middle mouse button
-
-**[v0.3](https://github.com/xyb3rt/sxiv/archive/v0.3.tar.gz)**
-*(January 29, 2011)*
-
-  * New command line options: `-d`, `-f`, `-p`, `-s`, `-v`, `-w`, `-Z`, `-z`
-  * More mouse mappings: Go to next/previous image with left/right click,
-    scroll image with mouse wheel (horizontally if Shift key is pressed),
-    zoom image with mouse wheel if Ctrl key is pressed
-
-**[v0.2](https://github.com/xyb3rt/sxiv/archive/v0.2.tar.gz)**
-*(January 23, 2011)*
-
-  * Bug fix: Handle window resizes correctly
-  * New keyboard shortcuts: `g`/`G`: go to first/last image; `[`/`]`: go 10
-    images back/forward
-  * Support for mouse wheel zooming (by Dave Reisner)
-  * Added fullscreen mode
-
-**[v0.1](https://github.com/xyb3rt/sxiv/archive/v0.1.tar.gz)**
-*(January 21, 2011)*
-
-  * Initial release
-
+Common options:
+- `-f`  : Start in fullscreen mode
+- `-t`  : Start in thumbnail mode
+- `-s`  : Disable slideshow
+- `-r`  : Recursively open images in directories
+- `-g`  : Set window geometry (WxH)
+- `-Z`  : Start with zoom level 100%
+- `-h`  : Display help message
+
+For complete usage information, see the man page:
+```bash
+man sxiv
+```
+
+## Configuration
+
+Behavior and keybindings can be customized in `config-settings.h`. Before building, you can create `config.h` from the default settings:
+
+```bash
+cp config-settings.h config.h
+```
+
+Then edit `config.h` to modify:
+- Window dimensions
+- Zoom levels
+- Keyboard and mouse mappings
+- Color schemes
+- Default slideshow delay
+
+## Keybindings (Default)
+
+Image mode:
+- `q`        : Quit
+- `Return`    : Switch to thumbnail mode
+- `Space`/`p`: Next/previous image
+- `[`/`]`    : Go 10 images back/forward
+- `+`/`-`    : Zoom in/out
+- `h`/`j`/`k`/`l`: Pan left/down/up/right
+- `r`        : Reload image
+- `a`        : Toggle anti-aliasing
+- `A`        : Toggle alpha layer checkerboard
+- `s`        : Toggle slideshow
+- `m`        : Mark image
+- `Delete`    : Delete current image (move to trash)
+
+Thumbnail mode:
+- `Return`    : Open selected image in image mode
+- `h`/`j`/`k`/`l`: Navigate thumbnails
+
+Mouse:
+- Left click        : Navigate images
+- Scroll wheel      : Navigate images
+- Scroll + Ctrl     : Zoom
+- Scroll + Shift    : Pan
+- Right click       : Switch to thumbnail mode (image mode) / Open image (thumb mode)
+
+## License
+
+This program is free software; you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation; either version 2 of the License, or (at your option) any later version.
+
+## Contributing
+
+Bug reports and contributions are welcome. Please check the existing documentation and code before submitting changes.
