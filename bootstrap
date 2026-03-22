@@ -1,10 +1,19 @@
 #!/bin/sh
 set -e
 
+# Prevent autotools from creating backup files
+export AUTOMAKE_BACKUPS=0
+
 # Generate the autotools build system
 
 echo "Running autoreconf..."
 autoreconf --install --verbose --force
+
+# Clean up any backup files created by autotools or editors
+echo "Cleaning up backup files..."
+find . -maxdepth 1 -name '*~' -delete
+find . -maxdepth 1 -name '*.bak' -delete
+find . -maxdepth 1 -name '*.swp' -delete
 
 echo ""
 echo "Build system generated successfully."

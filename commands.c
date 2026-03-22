@@ -156,15 +156,8 @@ static bool ensure_trash_dir(void)
 		return true;
 
 	char template[PATH_MAX];
-	char cwd[PATH_MAX];
-	
-	/* Get current working directory */
-	if (getcwd(cwd, sizeof(cwd)) == NULL) {
-		error(0, errno, "Failed to get current working directory");
-		return false;
-	}
 
-	snprintf(template, sizeof(template), "%s/.sxiv-trash-XXXXXX", cwd);
+	snprintf(template, sizeof(template), ".sxiv-trash-XXXXXX");
 	char *dir = mkdtemp(template);
 	if (dir == NULL) {
 		error(0, errno, "Failed to create trash directory");
