@@ -57,7 +57,19 @@ make
 sudo make install
 ```
 
-**Note:** This project requires GNU Make. On BSD systems where the default `make` command is not GNU Make, the configure script will detect this and instruct you to use `gmake` instead.
+**Note:** This project requires GNU Make. On BSD systems where the default `make` command is not GNU Make, the configure script will detect this and provide clear instructions to use `gmake` instead. You will see a message like:
+
+```
+==========================================
+IMPORTANT: GNU Make is required for building.
+Please use the following command to build:
+
+  gmake
+
+Or use:
+  gmake && sudo gmake install
+==========================================
+```
 
 Configuration options:
 

@@ -13,6 +13,7 @@ AM_PROG_CC_C_O
 AC_MSG_CHECKING([for GNU Make])
 if make --version 2>/dev/null | grep -q "GNU Make"; then
 	AC_MSG_RESULT([yes])
+	MAKE="make"
 else
 	AC_MSG_RESULT([no])
 	AC_CHECK_PROGS([GMAKE], [gmake], [no])
@@ -21,12 +22,17 @@ else
 	else
 		if $GMAKE --version 2>/dev/null | grep -q "GNU Make"; then
 			MAKE=$GMAKE
-			AC_MSG_NOTICE([Using $GMAKE (GNU Make) instead of make])
+			AC_MSG_RESULT([found: $GMAKE (GNU Make)])
 		else
 			AC_MSG_ERROR([GNU Make not found. Neither 'make' nor 'gmake' are GNU Make.])
 		fi
 	fi
 fi
+AC_SUBST([MAKE])
+
+# Store GNU_MAKE for user instructions
+GNU_MAKE=$MAKE
+AC_SUBST([GNU_MAKE])
 
 # Checks for libraries
 PKG_CHECK_MODULES([IMLIB2], [imlib2], [],
@@ -120,6 +126,27 @@ AC_CONFIG_FILES([
 ])
 AC_CONFIG_LINKS([config.h:config-auto.h])
 AC_OUTPUT
+
+# Build instructions
+echo ""
+echo "Configuration complete."
+if test "$MAKE" != "make"; then
+	echo ""
+	echo "=========================================="
+	echo "IMPORTANT: GNU Make is required for building."
+	echo "Please use the following command to build:"
+	echo ""
+	echo "  $MAKE"
+	echo ""
+	echo "Or use:"
+	echo "  $MAKE && sudo $MAKE install"
+	echo "=========================================="
+	echo ""
+else
+	echo "Now run:"
+	echo "  $MAKE"
+fi
+echo ""
 
 echo ""
 echo "Configuration:"
